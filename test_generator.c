@@ -3,7 +3,7 @@
 #include <time.h>
 #include "deque.h"
 #include "file_io.h"
-#include "sorting.h"  // ДОБАВЛЕНО!
+#include "sorting.h"
 
 int main() {
     printf("Генератор тестовых данных для дека\n");
@@ -22,7 +22,7 @@ int main() {
             while (getchar() != '\n');
             continue;
         }
-        while (getchar() != '\n'); // Очистка буфера
+        while (getchar() != '\n');
         
         if (choice == 1) {
             int size, min, max;
@@ -51,7 +51,7 @@ int main() {
                 printf("Ошибка ввода максимального значения!\n");
                 continue;
             }
-            while (getchar() != '\n'); // Очистка буфера
+            while (getchar() != '\n');
             
             // Создаем дек
             Deque* deque = create_deque();
@@ -66,51 +66,11 @@ int main() {
                 printf("Ошибка сохранения файла!\n");
             }
             
-            // Показываем первые 10 элементов
-            printf("Первые 10 элементов: ");
-            Node* current = deque->front;
-            for (int i = 0; i < 10 && current; i++) {
-                printf("%d ", current->data);
-                current = current->next;
-            }
-            printf("\n");
-            
             delete_deque(deque);
             
         } else if (choice == 2) {
             printf("Создание серии тестовых файлов...\n");
-            
-            // Создаем папку tests
-            int mkdir_result;
-#ifdef _WIN32
-            mkdir_result = system("mkdir tests 2>nul");
-#else
-            mkdir_result = system("mkdir -p tests 2>/dev/null");
-#endif
-            (void)mkdir_result; // Игнорируем возвращаемое значение
-            
-            int sizes[] = {100, 500, 1000, 5000, 10000, 50000};
-            int count = sizeof(sizes) / sizeof(sizes[0]);
-            
-            for (int i = 0; i < count; i++) {
-                char filename[256];
-                sprintf(filename, "tests/test_%d.txt", sizes[i]);
-                
-                Deque* deque = create_deque();
-                for (int j = 0; j < sizes[i]; j++) {
-                    push_rear(deque, rand() % 10000);
-                }
-                
-                if (save_deque_to_file(filename, deque)) {
-                    printf("Создан: %s (размер: %d)\n", filename, sizes[i]);
-                } else {
-                    printf("Ошибка создания: %s\n", filename);
-                }
-                
-                delete_deque(deque);
-            }
-            
-            printf("Создано %d тестовых файлов в папке tests/\n", count);
+            generate_multiple_test_files(7);
             
         } else if (choice == 3) {
             int size;
@@ -120,7 +80,7 @@ int main() {
                 while (getchar() != '\n');
                 continue;
             }
-            while (getchar() != '\n'); // Очистка буфера
+            while (getchar() != '\n');
             
             // Создаем дек
             Deque* deque = create_deque();
@@ -155,7 +115,6 @@ int main() {
             
             // Сортировка пузырьком
             printf("Сортировка пузырьком... ");
-            fflush(stdout);
             clock_t start = clock();
             bubble_sort_deque(bubble_copy);
             clock_t end = clock();
@@ -163,34 +122,11 @@ int main() {
             
             // Пирамидальная сортировка
             printf("Пирамидальная сортировка... ");
-            fflush(stdout);
             start = clock();
             heap_sort_deque(heap_copy);
             end = clock();
             printf("выполнена за %.6f сек\n", ((double)(end - start)) / CLOCKS_PER_SEC);
             
-            // Проверяем, что оба отсортированы правильно
-            printf("Обе сортировки дали одинаковый результат: ");
-            Node* b_node = bubble_copy->front;
-            Node* h_node = heap_copy->front;
-            int sorted_correctly = 1;
-            
-            while (b_node && h_node) {
-                if (b_node->data != h_node->data) {
-                    sorted_correctly = 0;
-                    break;
-                }
-                b_node = b_node->next;
-                h_node = h_node->next;
-            }
-            
-            if (sorted_correctly) {
-                printf("ДА\n");
-            } else {
-                printf("НЕТ\n");
-            }
-            
-            // Очистка
             delete_deque(deque);
             delete_deque(bubble_copy);
             delete_deque(heap_copy);

@@ -9,11 +9,8 @@ void bubble_sort_deque(Deque* deque);
 // Пирамидальная сортировка на деке
 void heap_sort_deque(Deque* deque);
 
-// Измерение времени сортировки дека
+// Измерение времени сортировки
 double measure_bubble_sort_time(Deque* deque);
 double measure_heap_sort_time(Deque* deque);
-
-// Копирование дека
-Deque* copy_deque(Deque* deque);
 
 #endif

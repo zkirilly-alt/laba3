@@ -4,8 +4,6 @@
 #include "deque.h"
 
 // Работа с файлами
-int save_array_to_file(const char* filename, int* arr, int size);
-int load_array_from_file(const char* filename, int** arr, int* size);
 int save_deque_to_file(const char* filename, Deque* deque);
 Deque* load_deque_from_file(const char* filename);
 

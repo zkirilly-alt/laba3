@@ -2,14 +2,6 @@
 #include <stdlib.h>
 #include "deque.h"
 
-// ================= ОБЪЯВЛЕНИЯ ВСПОМОГАТЕЛЬНЫХ ФУНКЦИЙ =================
-
-// Объявляем статические функции ДО их использования
-static void swap_adjacent_nodes(Deque* deque, Node* first, Node* second);
-static void swap_distant_nodes(Deque* deque, Node* a, Node* b);
-
-// ================= ОСНОВНЫЕ ФУНКЦИИ =================
-
 Deque* create_deque() {
     Deque* deque = (Deque*)malloc(sizeof(Deque));
     if (!deque) {
@@ -125,41 +117,12 @@ int get_size(Deque* deque) {
     return deque->size;
 }
 
-Deque* array_to_deque(int* arr, int size) {
-    Deque* deque = create_deque();
-    for (int i = 0; i < size; i++) {
-        push_rear(deque, arr[i]);
-    }
-    return deque;
-}
-
-int* deque_to_array(Deque* deque) {
-    if (!deque || is_empty(deque)) return NULL;
-    
-    int* arr = (int*)malloc(deque->size * sizeof(int));
-    if (!arr) {
-        fprintf(stderr, "Ошибка выделения памяти для массива\n");
-        exit(1);
-    }
-    
-    Node* current = deque->front;
-    for (int i = 0; i < deque->size; i++) {
-        arr[i] = current->data;
-        current = current->next;
-    }
-    
-    return arr;
-}
-
-// ================= ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =================
-
 // Получение узла по индексу
 Node* get_node_at_index(Deque* deque, int index) {
     if (!deque || index < 0 || index >= deque->size) {
         return NULL;
     }
     
-    // Оптимизация: идем с начала или с конца
     if (index < deque->size / 2) {
         Node* current = deque->front;
         for (int i = 0; i < index; i++) {
@@ -175,89 +138,27 @@ Node* get_node_at_index(Deque* deque, int index) {
     }
 }
 
-
-// Обмен соседних узлов
-static void swap_adjacent_nodes(Deque* deque, Node* first, Node* second) {
-    // first -> second
-    Node* first_prev = first->prev;
-    Node* second_next = second->next;
-    
-    // Обновляем внешние связи
-    if (first_prev) {
-        first_prev->next = second;
-    } else {
-        deque->front = second; // first был front
-    }
-    
-    if (second_next) {
-        second_next->prev = first;
-    } else {
-        deque->rear = first; // second был rear
-    }
-    
-    // Обновляем связи между узлами
-    second->prev = first_prev;
-    first->next = second_next;
-    
-    first->prev = second;
-    second->next = first;
+// Обмен значений между узлами
+void swap_nodes(Node* a, Node* b) {
+    if (!a || !b || a == b) return;
+    int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
 }
 
-// Обмен удаленных узлов
-static void swap_distant_nodes(Deque* deque, Node* a, Node* b) {
-    Node* a_prev = a->prev;
-    Node* a_next = a->next;
-    Node* b_prev = b->prev;
-    Node* b_next = b->next;
+// Копирование дека
+Deque* copy_deque(Deque* deque) {
+    if (!deque) return NULL;
     
-    // Обновляем связи для узла A
-    if (a_prev) {
-        a_prev->next = b;
-    } else {
-        deque->front = b; // a был front
+    Deque* copy = create_deque();
+    Node* current = deque->front;
+    
+    while (current) {
+        push_rear(copy, current->data);
+        current = current->next;
     }
     
-    if (a_next) {
-        a_next->prev = b;
-    }
-    
-    // Обновляем связи для узла B
-    if (b_prev) {
-        b_prev->next = a;
-    } else {
-        deque->front = a; // b был front
-    }
-    
-    if (b_next) {
-        b_next->prev = a;
-    } else {
-        deque->rear = a; // b был rear
-    }
-    
-    // Обновляем связи самих узлов
-    a->prev = b_prev;
-    a->next = b_next;
-    b->prev = a_prev;
-    b->next = a_next;
-}
-
-// Полный обмен узлами
-void swap_nodes_complete(Deque* deque, Node* a, Node* b) {
-    if (!deque || !a || !b || a == b) {
-        return;
-    }
-    
-    // Если узлы соседние, обрабатываем особо
-    if (a->next == b) {
-        // a и b идут подряд: a -> b
-        swap_adjacent_nodes(deque, a, b);
-    } else if (b->next == a) {
-        // b и a идут подряд: b -> a
-        swap_adjacent_nodes(deque, b, a);
-    } else {
-        // Узлы не соседние
-        swap_distant_nodes(deque, a, b);
-    }
+    return copy;
 }
 
 void print_deque(Deque* deque) {

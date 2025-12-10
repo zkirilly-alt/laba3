@@ -25,14 +25,10 @@ int pop_rear(Deque* deque);
 int is_empty(Deque* deque);
 int get_size(Deque* deque);
 
-// Преобразования
-Deque* array_to_deque(int* arr, int size);
-int* deque_to_array(Deque* deque);
-
 // Вспомогательные функции
-void swap_nodes(Node* a, Node* b);          // Обмен значениями (старая)
-void swap_nodes_complete(Deque* deque, Node* a, Node* b); // НОВАЯ: обмен узлами
+void swap_nodes(Node* a, Node* b);
 void print_deque(Deque* deque);
-Node* get_node_at_index(Deque* deque, int index); // Делаем публичной для тестов
+Node* get_node_at_index(Deque* deque, int index);
+Deque* copy_deque(Deque* deque);  // НОВАЯ: копирование дека
 
 #endif
