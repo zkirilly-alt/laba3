@@ -26,9 +26,10 @@ int is_empty(Deque* deque);
 int get_size(Deque* deque);
 
 // Вспомогательные функции
-void swap_nodes(Node* a, Node* b);
+void swap_nodes(Node* a, Node* b);                    // Обмен значениями
+void swap_nodes_complete(Deque* deque, Node* a, Node* b); // Обмен узлами
 void print_deque(Deque* deque);
 Node* get_node_at_index(Deque* deque, int index);
-Deque* copy_deque(Deque* deque);  // НОВАЯ: копирование дека
+Deque* copy_deque(Deque* deque);
 
 #endif

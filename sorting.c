@@ -3,7 +3,8 @@
 #include <time.h>
 #include "sorting.h"
 
-// Просеивание для пирамидальной сортировки
+// ================= ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =================
+
 static void heapify_deque(Deque* deque, int n, int i) {
     if (!deque || n <= 0 || i < 0 || i >= n) return;
     
@@ -23,7 +24,6 @@ static void heapify_deque(Deque* deque, int n, int i) {
         }
     }
     
-    // Обновляем largest_node
     largest_node = get_node_at_index(deque, largest);
     if (!largest_node) return;
     
@@ -39,13 +39,15 @@ static void heapify_deque(Deque* deque, int n, int i) {
     if (largest != i) {
         Node* i_node = get_node_at_index(deque, i);
         if (i_node) {
-            swap_nodes(i_node, get_node_at_index(deque, largest));
+            // ИСПОЛЬЗУЕМ ОБМЕН УЗЛАМИ вместо обмена значений
+            swap_nodes_complete(deque, i_node, get_node_at_index(deque, largest));
             heapify_deque(deque, n, largest);
         }
     }
 }
 
-// Сортировка пузырьком
+// ================= СОРТИРОВКА ПУЗЫРЬКОМ С ОБМЕНОМ УЗЛОВ =================
+
 void bubble_sort_deque(Deque* deque) {
     if (!deque || deque->size < 2) return;
     
@@ -60,18 +62,28 @@ void bubble_sort_deque(Deque* deque) {
             if (!current || !current->next) break;
             
             if (current->data > current->next->data) {
-                swap_nodes(current, current->next);
+                // ИСПОЛЬЗУЕМ ОБМЕН УЗЛАМИ вместо обмена значений
+                swap_nodes_complete(deque, current, current->next);
                 swapped = 1;
+                
+                // После обмена current и next поменялись местами
+                // current теперь указывает на узел, который был next
+                // Но нам нужно продолжать с того же места
+                // Правильнее будет получить узел заново
+                current = get_node_at_index(deque, i);
+                if (!current) break;
             }
             
             current = current->next;
+            if (!current) break;
         }
         n--;
         
     } while (swapped);
 }
 
-// Пирамидальная сортировка
+// ================= ПИРАМИДАЛЬНАЯ СОРТИРОВКА С ОБМЕНОМ УЗЛОВ =================
+
 void heap_sort_deque(Deque* deque) {
     if (!deque || deque->size < 2) return;
     
@@ -88,13 +100,15 @@ void heap_sort_deque(Deque* deque) {
         Node* last = get_node_at_index(deque, i);
         
         if (first && last) {
-            swap_nodes(first, last);
+            // ИСПОЛЬЗУЕМ ОБМЕН УЗЛАМИ вместо обмена значений
+            swap_nodes_complete(deque, first, last);
             heapify_deque(deque, i, 0);
         }
     }
 }
 
-// Измерение времени сортировки пузырьком
+// ================= ИЗМЕРЕНИЕ ВРЕМЕНИ =================
+
 double measure_bubble_sort_time(Deque* deque) {
     if (!deque || deque->size < 2) return 0.0;
     
@@ -111,7 +125,6 @@ double measure_bubble_sort_time(Deque* deque) {
     return time_spent;
 }
 
-// Измерение времени пирамидальной сортировки
 double measure_heap_sort_time(Deque* deque) {
     if (!deque || deque->size < 2) return 0.0;
     
