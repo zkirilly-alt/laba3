@@ -3,7 +3,6 @@
 #include <time.h>
 #include "file_io.h"
 
-// Сохранение дека в файл
 int save_deque_to_file(const char* filename, Deque* deque) {
     if (!deque) return 0;
     
@@ -23,7 +22,6 @@ int save_deque_to_file(const char* filename, Deque* deque) {
     return 1;
 }
 
-// Загрузка дека из файла
 Deque* load_deque_from_file(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (!file) {
@@ -48,7 +46,6 @@ Deque* load_deque_from_file(const char* filename) {
     return deque;
 }
 
-// Генерация тестового файла
 void generate_test_file(const char* filename, int size, int min_val, int max_val) {
     FILE* file = fopen(filename, "w");
     if (!file) {
@@ -66,7 +63,6 @@ void generate_test_file(const char* filename, int size, int min_val, int max_val
     printf("Создан тестовый файл: %s (размер: %d)\n", filename, size);
 }
 
-// Создание папки tests
 static void create_tests_dir(void) {
     int result;
 #ifdef _WIN32
@@ -77,11 +73,9 @@ static void create_tests_dir(void) {
     (void)result;
 }
 
-// Генерация нескольких тестовых файлов
 void generate_multiple_test_files(int base_count) {
     create_tests_dir();
     
-    // Размеры для тестирования
     int test_sizes[] = {100, 500, 1000, 5000, 10000, 50000, 100000};
     int count = sizeof(test_sizes) / sizeof(test_sizes[0]);
     

@@ -14,7 +14,6 @@ $(TEST_GEN): $(TEST_OBJ)
 main.o: main.c deque.h sorting.h file_io.h inout.h
 	gcc -c main.c
 
-# Убрал main.c из зависимостей inout.o
 inout.o: inout.c deque.h sorting.h file_io.h inout.h
 	gcc -c inout.c
 
@@ -31,6 +30,6 @@ test_generator.o: test_generator.c file_io.h deque.h sorting.h inout.h
 	gcc -c test_generator.c
 
 clean:
-	rm -f *.o $(TARGET) $(TEST_GEN) input.txt output.txt heap_output.txt tests/*.txt sorting_comparison.png
+	rm -f *.o $(TARGET) $(TEST_GEN) input.txt output.txt heap_output.txt tests/*.txt
 
 .PHONY: all clean

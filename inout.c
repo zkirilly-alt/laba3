@@ -1,4 +1,3 @@
-// inout.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,7 +12,6 @@
 #define OUTPUT_FILE "output.txt"
 #define HEAP_OUTPUT_FILE "heap_output.txt"
 
-// НОВАЯ ФУНКЦИЯ: обработка режима --file
 void process_file_mode(const char* filename) {
     printf("=== Режим работы с файлом ===\n");
     printf("Загрузка данных из файла: %s\n", filename);
@@ -27,11 +25,9 @@ void process_file_mode(const char* filename) {
     
     printf("Успешно загружено. Размер дека: %d\n", get_size(deque));
     
-    // Выводим исходный ряд
     printf("\nИсходный ряд из файла:\n");
     print_deque(deque);
     
-    // Создаем копию для сортировки
     Deque* copy_for_sorting = copy_deque(deque);
     if (!copy_for_sorting) {
         printf("Ошибка создания копии дека!\n");
@@ -39,27 +35,24 @@ void process_file_mode(const char* filename) {
         return;
     }
     
-    // Сортируем копию пузырьком
     printf("\nСортировка пузырьком...\n");
     bubble_sort_deque(copy_for_sorting);
     
-    // Выводим отсортированный ряд
     printf("Отсортированный ряд:\n");
     print_deque(copy_for_sorting);
     
-    // Сохраняем результат в файл
+    
     if (save_deque_to_file(OUTPUT_FILE, copy_for_sorting)) {
         printf("\nРезультат сохранен в файл: %s\n", OUTPUT_FILE);
     }
     
-    // Очищаем память
+
     delete_deque(deque);
     delete_deque(copy_for_sorting);
     
     printf("=== Завершение работы с файлом ===\n");
 }
 
-// ОДНА функция process_command_line - без дублирования!
 void process_command_line(int argc, char* argv[]) {
     if (argc == 3 && strcmp(argv[1], "--file") == 0) {
         process_file_mode(argv[2]);
@@ -67,7 +60,7 @@ void process_command_line(int argc, char* argv[]) {
     }
 }
 
-// Остальные функции...
+
 int safe_fgets(char* buffer, int size, FILE* stream) {
     if (fgets(buffer, size, stream) == NULL) {
         return 0;
@@ -187,7 +180,6 @@ void print_menu(void) {
     printf("Выберите опцию: ");
 }
 
-// Главная функция программы
 void allinout(void) {
     srand(time(NULL));
     Deque* deque = NULL;
