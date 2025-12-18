@@ -160,11 +160,7 @@ void test_all_files(void) {
 
 void create_tests_directory(void) {
     int result;
-#ifdef _WIN32
-    result = system("mkdir tests 2>nul");
-#else
     result = system("mkdir -p tests 2>/dev/null");
-#endif
     (void)result;
 }
 
@@ -318,7 +314,7 @@ void allinout(void) {
                 
                 if (system("ls tests/*.txt 2>/dev/null | head -1") != 0) {
                     printf("Генерация тестовых файлов...\n");
-                    generate_multiple_test_files(7);
+                    generate_multiple_test_files(5);
                 }
                 
                 test_all_files();

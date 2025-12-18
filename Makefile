@@ -28,8 +28,8 @@ file_io.o: file_io.c file_io.h deque.h
 
 test_generator.o: test_generator.c file_io.h deque.h sorting.h inout.h
 	gcc -c test_generator.c
-
+  
 clean:
-	rm -f *.o $(TARGET) $(TEST_GEN) input.txt output.txt heap_output.txt tests/*.txt
+	rm -f *.o $(TARGET) $(TEST_GEN) input.txt output.txt heap_output.txt tests/*.txt 
 
 .PHONY: all clean

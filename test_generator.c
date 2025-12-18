@@ -156,7 +156,7 @@ int main() {
             
         } else if (choice == 2) {
             printf("Создание серии тестовых файлов...\n");
-            generate_multiple_test_files(7);
+            generate_multiple_test_files(5);
             
         } else if (choice != 3) {
             printf("Неверный выбор! Введите число от 1 до 3.\n");
